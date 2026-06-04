@@ -83,6 +83,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private Boolean firstLogin;
+
     /*
      * Empresa
      */
@@ -129,36 +132,30 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-
         return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-
         return active;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-
         return active;
     }
 
     public String getFullName() {
-
         return lastname == null
                 ? name
                 : name + " " + lastname;
