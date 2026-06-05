@@ -1,6 +1,7 @@
 package br.com.hitbox.infra.service;
 
 import br.com.hitbox.core.domain.User;
+import br.com.hitbox.infra.entity.UserEntity;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -22,11 +23,11 @@ public class TokenService {
     @Value("${secret.key.api}")
     private String secret;
 
-    public String generateToken(User user) {
+    public String generateToken(UserEntity user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create().withIssuer("erp-hitbox")
-                    .withSubject(user.getUserId().toString())
+                    .withSubject(user.getId().toString())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
             log.info("Token generate Successfully");

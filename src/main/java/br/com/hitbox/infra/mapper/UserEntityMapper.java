@@ -29,7 +29,10 @@ public class UserEntityMapper {
         entity.setPassword(domain.getPassword());
         entity.setRole(domain.getRole());
         entity.setActive(domain.getActive());
-
+        entity.setAvatarUrl(domain.getAvatarUrl());
+        entity.setEmailVerified(domain.getEmailVerified());
+        entity.setFirstLogin(domain.getFirstLogin());
+        entity.setStatus(domain.getStatus());
         return entity;
     }
 
@@ -75,7 +78,17 @@ public class UserEntityMapper {
                 .avatarUrl(entity.getAvatarUrl())
 
                 .role(entity.getRole())
+                .companyId(
+                        entity.getCompany() != null
+                                ? entity.getCompany().getId()
+                                : null
+                )
 
+                .teamId(
+                        entity.getTeam() != null
+                                ? entity.getTeam().getId()
+                                : null
+                )
                 .companyName(
                         entity.getCompany() != null
                                 ? entity.getCompany().getCompanyName()
@@ -87,11 +100,8 @@ public class UserEntityMapper {
                                 ? entity.getTeam().getTeamName()
                                 : null
                 )
-
                 .active(entity.getActive())
-
                 .lastLogin(entity.getLastLogin())
-
                 .build();
     }
 
@@ -117,5 +127,6 @@ public class UserEntityMapper {
         target.setRole(source.getRole());
         target.setActive(source.getActive());
         target.setAvatarUrl(source.getAvatarUrl());
+        target.setRole(source.getRole());
     }
 }

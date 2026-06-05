@@ -74,6 +74,10 @@ public class CompanyEntity {
     @Builder.Default
     private List<TeamEntity> teams = new ArrayList<>();
 
+
+    @Column(name = "slug", unique = true)
+    private String slug;
+
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();

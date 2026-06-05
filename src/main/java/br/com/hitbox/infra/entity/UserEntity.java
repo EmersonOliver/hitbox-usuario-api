@@ -1,6 +1,7 @@
 package br.com.hitbox.infra.entity;
 
 import br.com.hitbox.infra.enums.UserRole;
+import br.com.hitbox.infra.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -91,8 +92,7 @@ public class UserEntity implements UserDetails {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "company_id",
-            nullable = false
+            name = "company_id"
     )
     private CompanyEntity company;
 
@@ -102,6 +102,23 @@ public class UserEntity implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private TeamEntity team;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserEntity other)) return false;
+        return id != null && id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 
     @PrePersist
     public void prePersist() {

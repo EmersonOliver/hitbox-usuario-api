@@ -1,8 +1,10 @@
 package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.domain.User;
+import br.com.hitbox.infra.entity.UserEntity;
 import br.com.hitbox.infra.service.TokenService;
 import br.com.hitbox.interfaces.request.AuthRecord;
+import br.com.hitbox.interfaces.response.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,8 +27,8 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRecord authRecord) {
         var userNamePassword = new UsernamePasswordAuthenticationToken(authRecord.email(), authRecord.password());
         var authenticate = authenticationManager.authenticate(userNamePassword);
-        var token = tokenService.generateToken((User) authenticate.getPrincipal());
-        return ResponseEntity.ok(new LoginResponse(token, ((Usuarios) authenticate.getPrincipal()).getNome(), authRecord.username()));
+        var token = tokenService.generateToken((UserEntity) authenticate.getPrincipal());
+        return ResponseEntity.ok(new LoginResponse(token, ((UserEntity) authenticate.getPrincipal()).getName(), authRecord.email()));
     }
 
 }

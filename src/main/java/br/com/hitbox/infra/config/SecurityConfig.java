@@ -29,8 +29,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/create").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/produtos").hasRole("ADMIN").anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.POST, "/user/create").permitAll())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

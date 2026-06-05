@@ -22,7 +22,11 @@ public class UserProfile {
 
     private UserRole role;
 
+    private UUID companyId;
+
     private String companyName;
+
+    private UUID teamId;
 
     private String teamName;
 

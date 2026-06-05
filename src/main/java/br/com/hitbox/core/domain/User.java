@@ -1,6 +1,7 @@
 package br.com.hitbox.core.domain;
 
 import br.com.hitbox.infra.enums.UserRole;
+import br.com.hitbox.infra.enums.UserStatus;
 import lombok.*;
 
 import java.util.UUID;
@@ -28,6 +29,8 @@ public class User {
 
     private UserRole role;
 
+    private UserStatus status;
+
     private Boolean active;
 
     private Boolean emailVerified;
@@ -35,4 +38,5 @@ public class User {
     private Boolean firstLogin;
 
     private String avatarUrl;
+
 }

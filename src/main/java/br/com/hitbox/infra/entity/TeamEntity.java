@@ -78,6 +78,10 @@ public class TeamEntity {
     )
     private CompanyEntity company;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean defaultTeam = false;
+
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
