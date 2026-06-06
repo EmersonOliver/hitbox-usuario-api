@@ -15,7 +15,7 @@ public class CompanyUseCase {
 
     public Company create(Company company) {
 
-        gateway.findByCnpj(company.getCnpj())
+        gateway.findByDocument(company.getDocument())
                 .ifPresent(c -> {
                     throw new IllegalArgumentException(
                             "Empresa já cadastrada"
@@ -23,7 +23,6 @@ public class CompanyUseCase {
                 });
 
         company.setActive(true);
-
         return gateway.save(company);
     }
 

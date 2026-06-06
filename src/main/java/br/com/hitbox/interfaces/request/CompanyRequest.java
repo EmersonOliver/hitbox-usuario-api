@@ -1,6 +1,7 @@
 package br.com.hitbox.interfaces.request;
 
 import br.com.hitbox.infra.enums.CompanyPlanType;
+import br.com.hitbox.infra.enums.DocumentType;
 import lombok.*;
 
 @Getter
@@ -13,7 +14,9 @@ public class CompanyRequest {
 
     private String tradeName;
 
-    private String cnpj;
+    private String document;
+
+    private DocumentType documentType;
 
     private String email;
 

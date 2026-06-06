@@ -14,5 +14,5 @@ public interface CompanyGateway {
 
     Optional<Company> findById(UUID id);
 
-    Optional<Company> findByCnpj(String cnpj);
+    Optional<Company> findByDocument(String cnpj);
 }

@@ -6,17 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+import java.util.UUID;
+
+    @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResponse {
 
-    @JsonIgnoreProperties("password")
     private String user;
     private String token;
-
     private String email;
-
+    private UUID companyId;
+    private Boolean firstLogin;
 
 }

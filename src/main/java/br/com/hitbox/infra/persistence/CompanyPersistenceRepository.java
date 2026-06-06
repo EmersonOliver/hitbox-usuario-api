@@ -62,9 +62,9 @@ public class CompanyPersistenceRepository implements CompanyGateway {
     }
 
     @Override
-    public Optional<Company> findByCnpj(String cnpj) {
+    public Optional<Company> findByDocument(String document) {
 
-        return repository.findByCnpj(cnpj)
+        return repository.findByDocument(document)
                 .map(mapper::toDomain);
     }
 }

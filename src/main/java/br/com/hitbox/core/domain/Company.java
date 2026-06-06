@@ -1,5 +1,6 @@
 package br.com.hitbox.core.domain;
 import br.com.hitbox.infra.enums.CompanyPlanType;
+import br.com.hitbox.infra.enums.DocumentType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,19 +17,19 @@ public class Company {
 
     private String tradeName;
 
-    private String cnpj;
+    private String document;
+
+    private DocumentType documentType;
 
     private String email;
 
     private String phone;
 
+    private String slug;
+
     private CompanyPlanType planType;
 
     private Boolean active;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     public boolean isActive() {
         return Boolean.TRUE.equals(active);

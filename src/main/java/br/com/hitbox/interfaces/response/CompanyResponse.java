@@ -16,7 +16,7 @@ public class CompanyResponse {
 
     private String tradeName;
 
-    private String cnpj;
+    private String document;
 
     private String email;
 

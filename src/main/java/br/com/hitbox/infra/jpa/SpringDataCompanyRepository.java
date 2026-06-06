@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface SpringDataCompanyRepository extends JpaRepository<CompanyEntity, UUID>, JpaSpecificationExecutor<CompanyEntity> {
-     Optional<CompanyEntity> findByCnpj(String cnpj);
+     Optional<CompanyEntity> findByDocument(String document);
 }

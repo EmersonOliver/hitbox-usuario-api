@@ -1,7 +1,10 @@
 package br.com.hitbox.infra.config.filter;
 
+import br.com.hitbox.infra.entity.UserEntity;
+import br.com.hitbox.infra.exceptions.HitboxException;
 import br.com.hitbox.infra.jpa.SpringDataUserRepository;
 import br.com.hitbox.infra.service.TokenService;
+import br.com.hitbox.security.AuthenticatedUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,20 +27,55 @@ public class SecurityFilter extends OncePerRequestFilter {
     private final SpringDataUserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain)
+            throws ServletException, IOException {
 
-        var token = this.recoverToken(request);
+        String token = recoverToken(request);
+
         if (token != null) {
-            var subject = tokenService.validateToken(token);
-            var userId = UUID.fromString(subject);
-            UserDetails userDetails = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-            var authentication = new UsernamePasswordAuthenticationToken(userDetails, userId, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        chain.doFilter(request, response);
 
+            String subject =
+                    tokenService.validateToken(token);
+
+            UUID userId =
+                    UUID.fromString(subject);
+
+            UserEntity user =
+                    userRepository.findById(userId)
+                            .orElseThrow(() ->
+                                    new IllegalArgumentException(
+                                            "Usuário não encontrado"
+                                    ));
+
+            AuthenticatedUser principal =
+                    new AuthenticatedUser(
+                            user.getId(),
+
+                            user.getCompany() != null
+                                    ? user.getCompany().getId()
+                                    : null,
+
+                            user.getEmail(),
+
+                            user.getRole()
+                    );
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            principal,
+                            null,
+                            user.getAuthorities()
+                    );
+
+            SecurityContextHolder
+                    .getContext()
+                    .setAuthentication(authentication);
+        }
+
+        chain.doFilter(request, response);
     }
     public String recoverToken(HttpServletRequest httpServletRequest) {
         var authorization = httpServletRequest.getHeader("Authorization");

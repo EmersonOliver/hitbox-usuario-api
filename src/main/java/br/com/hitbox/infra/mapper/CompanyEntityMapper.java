@@ -18,7 +18,8 @@ public class CompanyEntityMapper {
         entity.setId(domain.getCompanyId());
         entity.setCompanyName(domain.getCompanyName());
         entity.setTradeName(domain.getTradeName());
-        entity.setCnpj(domain.getCnpj());
+        entity.setDocument(domain.getDocument());
+        entity.setDocumentType(domain.getDocumentType());
         entity.setEmail(domain.getEmail());
         entity.setPhone(domain.getPhone());
         entity.setPlanType(domain.getPlanType());
@@ -38,7 +39,8 @@ public class CompanyEntityMapper {
                 .companyId(entity.getId())
                 .companyName(entity.getCompanyName())
                 .tradeName(entity.getTradeName())
-                .cnpj(entity.getCnpj())
+                .document(entity.getDocument())
+                .documentType(entity.getDocumentType())
                 .email(entity.getEmail())
                 .phone(entity.getPhone())
                 .planType(entity.getPlanType())

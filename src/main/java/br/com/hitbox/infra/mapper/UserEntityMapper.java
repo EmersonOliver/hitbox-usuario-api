@@ -2,6 +2,8 @@ package br.com.hitbox.infra.mapper;
 
 import br.com.hitbox.core.domain.User;
 import br.com.hitbox.core.domain.UserProfile;
+import br.com.hitbox.infra.entity.CompanyEntity;
+import br.com.hitbox.infra.entity.TeamEntity;
 import br.com.hitbox.infra.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -128,5 +130,7 @@ public class UserEntityMapper {
         target.setActive(source.getActive());
         target.setAvatarUrl(source.getAvatarUrl());
         target.setRole(source.getRole());
+        target.setCompany(CompanyEntity.builder().id(source.getCompanyId()).build());
+        target.setTeam(TeamEntity.builder().id(source.getTeamId()).build());
     }
 }

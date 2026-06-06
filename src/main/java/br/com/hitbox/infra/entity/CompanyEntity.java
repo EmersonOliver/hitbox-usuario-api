@@ -1,6 +1,7 @@
 package br.com.hitbox.infra.entity;
 
 import br.com.hitbox.infra.enums.CompanyPlanType;
+import br.com.hitbox.infra.enums.DocumentType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,12 +18,6 @@ import java.util.UUID;
 @Entity
 @Table(
         name = "company",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uk_company_cnpj",
-                        columnNames = "cnpj"
-                )
-        },
         indexes = {
                 @Index(
                         name = "idx_company_name",
@@ -43,8 +38,10 @@ public class CompanyEntity {
     @Column(name = "trade_name", length = 150)
     private String tradeName;
 
-    @Column(length = 14)
-    private String cnpj;
+    private String document;
+
+    @Enumerated(EnumType.STRING)
+    private DocumentType documentType;
 
     @Column(nullable = false, length = 255)
     private String email;

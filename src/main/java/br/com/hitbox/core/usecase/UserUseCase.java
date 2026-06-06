@@ -30,7 +30,7 @@ public class UserUseCase {
         user.setActive(true);
         user.setEmailVerified(false);
         user.setFirstLogin(true);
-        user.setRole(UserRole.ADMIN);
+        user.setRole(UserRole.OWNER);
         user.setStatus(UserStatus.ACTIVE);
         return userGateway.save(user);
     }
@@ -58,6 +58,14 @@ public class UserUseCase {
 
     public UserProfile findById(UUID userId) {
         return userGateway.findProfileById(userId)
+                .orElseThrow(() ->
+                        new HitboxException(
+                                "Usuário não encontrado."
+                        ));
+    }
+    
+    public User findUserById(UUID userId){
+        return userGateway.findById(userId)
                 .orElseThrow(() ->
                         new HitboxException(
                                 "Usuário não encontrado."
@@ -137,5 +145,9 @@ public class UserUseCase {
         user.setActive(false);
 
         userGateway.save(user);
+    }
+
+    public void update(UUID userId, User user) {
+         userGateway.update(user, userId);
     }
 }
