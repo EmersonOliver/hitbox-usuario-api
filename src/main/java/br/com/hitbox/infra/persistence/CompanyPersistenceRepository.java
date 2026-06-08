@@ -8,6 +8,7 @@ import br.com.hitbox.infra.mapper.CompanyEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,9 +63,9 @@ public class CompanyPersistenceRepository implements CompanyGateway {
     }
 
     @Override
-    public Optional<Company> findByDocument(String document) {
+    public List<Company> findByDocument(String document) {
 
-        return repository.findByDocument(document)
-                .map(mapper::toDomain);
+        return repository.findByDocument(document).stream()
+                .map(mapper::toDomain).toList();
     }
 }

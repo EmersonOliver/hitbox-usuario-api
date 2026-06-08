@@ -1,5 +1,7 @@
 package br.com.hitbox.infra.service;
 
+import br.com.hitbox.core.domain.Company;
+import br.com.hitbox.core.domain.User;
 import br.com.hitbox.infra.entity.UserEntity;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -33,7 +35,11 @@ public class TokenService {
                             .withClaim(
                                     "X-User-Role",
                                     "ROLE_" + user.getRole().name()
-                            )
+                            ).withClaim("name", user.getName())
+                            .withClaim("fullName", user.getFullName())
+                            .withClaim("email", user.getEmail())
+                            .withClaim("companyName",
+                                    user.getCompany() != null ? user.getCompany().getCompanyName() : null)
                             .withExpiresAt(
                                     generateExpirationDate()
                             );
@@ -45,6 +51,45 @@ public class TokenService {
                         user.getCompany().getId().toString()
                 );
             }
+
+            return builder.sign(algorithm);
+
+        } catch (RuntimeException e) {
+
+            log.error(
+                    "Error generate token {}",
+                    e.getMessage(),
+                    e
+            );
+
+            throw e;
+        }
+    }
+
+    public String generateToken(User user, Company company) {
+        try {
+            Algorithm algorithm =
+                    Algorithm.HMAC256(secret);
+            var builder =
+                    JWT.create()
+                            .withIssuer("erp-hitbox")
+                            .withSubject(user.getUserId().toString())
+                            .withClaim(
+                                    "X-User-Role",
+                                    "ROLE_" + user.getRole().name()
+                            ).withClaim("name", user.getName())
+                            .withClaim("fullName", user.getFullName())
+                            .withClaim("email", user.getEmail())
+                            .withClaim("companyName",
+                                    company.getCompanyName())
+                            .withExpiresAt(
+                                    generateExpirationDate()
+                            );
+            builder.withClaim(
+                    "X-Company-Id",
+                    company.getCompanyId().toString()
+            );
+
 
             return builder.sign(algorithm);
 

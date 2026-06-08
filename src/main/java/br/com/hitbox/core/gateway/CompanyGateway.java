@@ -2,6 +2,7 @@ package br.com.hitbox.core.gateway;
 
 import br.com.hitbox.core.domain.Company;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,5 +15,5 @@ public interface CompanyGateway {
 
     Optional<Company> findById(UUID id);
 
-    Optional<Company> findByDocument(String cnpj);
+    List<Company> findByDocument(String cnpj);
 }

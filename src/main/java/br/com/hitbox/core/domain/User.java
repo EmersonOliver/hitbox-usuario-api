@@ -39,4 +39,10 @@ public class User {
 
     private String avatarUrl;
 
+    public String getFullName() {
+        return lastname == null
+                ? name
+                : name + " " + lastname;
+    }
+
 }

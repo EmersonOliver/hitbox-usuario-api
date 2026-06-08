@@ -5,7 +5,8 @@ import br.com.hitbox.core.domain.Team;
 import br.com.hitbox.core.domain.User;
 import br.com.hitbox.infra.enums.UserRole;
 import br.com.hitbox.infra.exceptions.HitboxException;
-import jakarta.transaction.Transactional;
+import br.com.hitbox.infra.service.TokenService;
+import br.com.hitbox.interfaces.response.OnboardingResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +20,17 @@ public class CreateCompanyOnboardingUseCase {
     private final CompanyUseCase companyUseCase;
     private final TeamUseCase teamUseCase;
 
-//    @Transactional
-    public Company createCompany(
+    private final TokenService tokenService;
+
+    //    @Transactional
+    public OnboardingResponse createCompany(
             UUID userId,
             Company company) {
 
+
         User user =
                 userUseCase.findUserById(userId);
+
 
         if (user.getCompanyId() != null) {
             throw new HitboxException(
@@ -36,6 +41,11 @@ public class CreateCompanyOnboardingUseCase {
         Company createdCompany =
                 companyUseCase.create(company);
 
+        String token =
+                tokenService.generateToken(
+                        user,
+                        createdCompany
+                );
         Team adminTeam =
                 teamUseCase.createDefaultTeam(
                         createdCompany.getCompanyId()
@@ -60,6 +70,6 @@ public class CreateCompanyOnboardingUseCase {
                 user
         );
 
-        return createdCompany;
+        return new OnboardingResponse(company, token);
     }
 }

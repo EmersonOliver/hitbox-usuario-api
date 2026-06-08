@@ -5,6 +5,8 @@ import br.com.hitbox.core.usecase.CreateCompanyOnboardingUseCase;
 import br.com.hitbox.interfaces.mapper.CompanyMapper;
 import br.com.hitbox.interfaces.request.CompanyRequest;
 import br.com.hitbox.interfaces.response.CompanyResponse;
+import br.com.hitbox.interfaces.response.LoginResponse;
+import br.com.hitbox.interfaces.response.OnboardingResponse;
 import br.com.hitbox.security.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +27,18 @@ public class CompanyController {
     private final CompanyMapper mapper;
 
     @PostMapping("/create")
-    public ResponseEntity<CompanyResponse> createCompany(
+    public ResponseEntity<OnboardingResponse> createCompany(
             @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody CompanyRequest request) {
+
+
         var company =
                 onboardingUseCase.createCompany(
                         user.getUserId(),
                         mapper.toDomain(request)
                 );
 
-        return ResponseEntity.ok(
-                mapper.toResponse(company)
+        return ResponseEntity.ok(company
         );
     }
 }
