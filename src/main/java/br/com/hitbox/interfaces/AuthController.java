@@ -9,6 +9,7 @@ import br.com.hitbox.interfaces.response.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,21 +27,26 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRecord authRecord) {
-        var userNamePassword = new UsernamePasswordAuthenticationToken(authRecord.email(), authRecord.password());
-        var authenticate = authenticationManager.authenticate(userNamePassword);
-        var token = tokenService.generateToken((UserEntity) authenticate.getPrincipal());
+        try{
+            var userNamePassword = new UsernamePasswordAuthenticationToken(authRecord.email(), authRecord.password());
+            var authenticate = authenticationManager.authenticate(userNamePassword);
+            var token = tokenService.generateToken((UserEntity) authenticate.getPrincipal());
 
-        var response = new LoginResponse();
-        var usuario = (UserEntity) authenticate.getPrincipal();
-        if (usuario == null) {
-            throw new HitboxException("Usuario não encontrado!");
+            var response = new LoginResponse();
+            var usuario = (UserEntity) authenticate.getPrincipal();
+            if (usuario == null) {
+                throw new HitboxException("Usuario não encontrado!");
+            }
+            response.setEmail(usuario.getEmail());
+            response.setToken(token);
+            response.setFirstLogin(usuario.getFirstLogin());
+            response.setCompanyId(usuario.getCompany() != null ? usuario.getCompany().getId() : null);
+            response.setUser(usuario.getFullName());
+            return ResponseEntity.ok(response);
+        } catch (InternalAuthenticationServiceException e) {
+            throw new HitboxException("Usuário não existe!");
         }
-        response.setEmail(usuario.getEmail());
-        response.setToken(token);
-        response.setFirstLogin(usuario.getFirstLogin());
-        response.setCompanyId(usuario.getCompany() != null ? usuario.getCompany().getId() : null);
-        response.setUser(usuario.getFullName());
-        return ResponseEntity.ok(response);
+
     }
 
 }

@@ -39,10 +39,15 @@ public class User {
 
     private String avatarUrl;
 
+    private Company company;
+
     public String getFullName() {
         return lastname == null
                 ? name
                 : name + " " + lastname;
     }
 
+    public Boolean isActive() {
+        return true;
+    }
 }

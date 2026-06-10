@@ -1,5 +1,6 @@
 package br.com.hitbox.infra.mapper;
 
+import br.com.hitbox.core.domain.Company;
 import br.com.hitbox.core.domain.User;
 import br.com.hitbox.core.domain.UserProfile;
 import br.com.hitbox.infra.entity.CompanyEntity;
@@ -56,6 +57,10 @@ public class UserEntityMapper {
                                 ? entity.getCompany().getId()
                                 : null
                 )
+                .company(  entity.getCompany() != null ? Company.builder()
+                        .companyId(entity.getCompany().getId())
+                        .companyName(entity.getCompany().getCompanyName())
+                        .build(): null)
                 .teamId(
                         entity.getTeam() != null
                                 ? entity.getTeam().getId()
