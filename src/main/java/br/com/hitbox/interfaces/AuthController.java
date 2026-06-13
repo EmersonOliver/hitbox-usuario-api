@@ -42,6 +42,7 @@ public class AuthController {
             response.setFirstLogin(usuario.getFirstLogin());
             response.setCompanyId(usuario.getCompany() != null ? usuario.getCompany().getId() : null);
             response.setUser(usuario.getFullName());
+
             return ResponseEntity.ok(response);
         } catch (InternalAuthenticationServiceException e) {
             throw new HitboxException("Usuário não existe!");

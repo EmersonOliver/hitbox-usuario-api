@@ -7,6 +7,7 @@ import br.com.hitbox.interfaces.response.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
@@ -40,6 +41,7 @@ public class ProfileUseCase {
                                 .name(user.getCompany().getCompanyName())
                                 .build()
                 )
+                .datetimeLastLogin(LocalDateTime.now())
                 .build();
     }
 }

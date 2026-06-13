@@ -3,6 +3,7 @@ package br.com.hitbox.interfaces.response;
 import br.com.hitbox.infra.enums.UserRole;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
@@ -21,4 +22,5 @@ public class UserProfileResponse {
     private UserRole role;
     private Boolean active;
     private CompanyProfileResponse company;
+    private LocalDateTime datetimeLastLogin;
 }
