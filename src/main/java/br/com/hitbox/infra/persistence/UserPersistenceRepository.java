@@ -4,14 +4,20 @@ import br.com.hitbox.core.domain.User;
 import br.com.hitbox.core.domain.UserProfile;
 import br.com.hitbox.core.gateway.UserGateway;
 import br.com.hitbox.infra.entity.UserEntity;
+import br.com.hitbox.infra.enums.UserRole;
 import br.com.hitbox.infra.jpa.SpringDataUserRepository;
 import br.com.hitbox.infra.mapper.UserEntityMapper;
+import br.com.hitbox.infra.query.specification.UserSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @Repository
 @RequiredArgsConstructor
@@ -58,8 +64,7 @@ public class UserPersistenceRepository implements UserGateway {
     @Override
     public Optional<User> findByEmail(UUID companyId, String email) {
         return repository
-                .findByCompanyIdAndEmail(
-                        companyId,
+                .findByEmail(
                         email
                 )
                 .map(mapper::toDomain);
@@ -72,7 +77,7 @@ public class UserPersistenceRepository implements UserGateway {
 
     @Override
     public Optional<UserProfile> findProfileById(UUID userId) {
-        return repository.findDetailedById(userId)
+        return repository.findById(userId)
                 .map(mapper::toUserProfile);
     }
 
@@ -80,5 +85,11 @@ public class UserPersistenceRepository implements UserGateway {
     public Optional<User> findById(UUID userId) {
         return repository.findById(userId)
                 .map(mapper::toDomain);
+    }
+
+    @Override
+    public List<User> loadByRolesAndCompany(UserRole userRole, UUID companyId) {
+        Specification<UserEntity> specs = UserSpecification.specsByRole(userRole, companyId);
+        return repository.findAll(specs).stream().map(mapper::toDomain).toList();
     }
 }

@@ -1,6 +1,7 @@
 package br.com.hitbox.infra.query.specification;
 
 import br.com.hitbox.infra.entity.UserEntity;
+import br.com.hitbox.infra.enums.UserRole;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -18,13 +19,6 @@ public class UserSpecification {
         return (root, query, builder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
-
-            predicates.add(
-                    builder.equal(
-                            root.get("company").get("id"),
-                            companyId
-                    )
-            );
 
             if (textFilter != null && !textFilter.isBlank()) {
 
@@ -52,6 +46,32 @@ public class UserSpecification {
                 );
             }
 
+            return builder.and(
+                    predicates.toArray(new Predicate[0])
+            );
+        };
+    }
+
+    public static Specification<UserEntity> specsByRole(
+            UserRole userRole,
+            UUID companyId
+    ) {
+
+        return (root, query, builder) -> {
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (userRole != null) {
+
+                predicates.add(
+                        builder.and(
+                                builder.equal(
+                                        root.get("role"),
+                                        userRole
+                                )
+                        )
+                );
+            }
             return builder.and(
                     predicates.toArray(new Predicate[0])
             );

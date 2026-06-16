@@ -32,6 +32,23 @@ public class HitboxExceptionHandler {
                 .body(error);
     }
 
+    @ExceptionHandler(HitboxUnauthorizedException.class)
+    public ResponseEntity<ApiError> handlerHitboxUnauthorizedException(
+            HitboxUnauthorizedException ex,
+            HttpServletRequest request) {
+
+        ApiError error = new ApiError(
+                HttpStatus.UNAUTHORIZED.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+        log.error("HitboxExceptionHandler.handlerHitboxUnauthorizedException--> MessageError {}", ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(error);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handlerException(
             Exception ex,

@@ -4,6 +4,7 @@ import br.com.hitbox.infra.enums.UserRole;
 import br.com.hitbox.infra.enums.UserStatus;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -14,10 +15,6 @@ import java.util.UUID;
 public class User {
 
     private UUID userId;
-
-    private UUID companyId;
-
-    private UUID teamId;
 
     private String name;
 
@@ -39,7 +36,11 @@ public class User {
 
     private String avatarUrl;
 
-    private Company company;
+    private LocalDateTime lastLogin;
+
+    public Boolean isValid() {
+        return this.userId != null;
+    }
 
     public String getFullName() {
         return lastname == null

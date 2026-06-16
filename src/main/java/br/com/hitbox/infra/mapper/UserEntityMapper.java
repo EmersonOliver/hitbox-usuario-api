@@ -1,10 +1,7 @@
 package br.com.hitbox.infra.mapper;
 
-import br.com.hitbox.core.domain.Company;
 import br.com.hitbox.core.domain.User;
 import br.com.hitbox.core.domain.UserProfile;
-import br.com.hitbox.infra.entity.CompanyEntity;
-import br.com.hitbox.infra.entity.TeamEntity;
 import br.com.hitbox.infra.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -52,20 +49,7 @@ public class UserEntityMapper {
                 .active(entity.getActive())
                 .avatarUrl(entity.getAvatarUrl())
                 .firstLogin(entity.getFirstLogin())
-                .companyId(
-                        entity.getCompany() != null
-                                ? entity.getCompany().getId()
-                                : null
-                )
-                .company(  entity.getCompany() != null ? Company.builder()
-                        .companyId(entity.getCompany().getId())
-                        .companyName(entity.getCompany().getCompanyName())
-                        .build(): null)
-                .teamId(
-                        entity.getTeam() != null
-                                ? entity.getTeam().getId()
-                                : null
-                )
+                .lastLogin(entity.getLastLogin())
                 .build();
     }
 
@@ -74,39 +58,12 @@ public class UserEntityMapper {
         if (entity == null) {
             return null;
         }
-
         return UserProfile.builder()
                 .userId(entity.getId())
-
                 .fullName(entity.getFullName())
-
                 .email(entity.getEmail())
-
                 .avatarUrl(entity.getAvatarUrl())
-
                 .role(entity.getRole())
-                .companyId(
-                        entity.getCompany() != null
-                                ? entity.getCompany().getId()
-                                : null
-                )
-
-                .teamId(
-                        entity.getTeam() != null
-                                ? entity.getTeam().getId()
-                                : null
-                )
-                .companyName(
-                        entity.getCompany() != null
-                                ? entity.getCompany().getCompanyName()
-                                : null
-                )
-
-                .teamName(
-                        entity.getTeam() != null
-                                ? entity.getTeam().getTeamName()
-                                : null
-                )
                 .active(entity.getActive())
                 .lastLogin(entity.getLastLogin())
                 .build();
@@ -135,7 +92,5 @@ public class UserEntityMapper {
         target.setActive(source.getActive());
         target.setAvatarUrl(source.getAvatarUrl());
         target.setRole(source.getRole());
-        target.setCompany(CompanyEntity.builder().id(source.getCompanyId()).build());
-        target.setTeam(TeamEntity.builder().id(source.getTeamId()).build());
     }
 }

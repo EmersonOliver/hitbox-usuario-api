@@ -13,17 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID>, JpaSpecificationExecutor<UserEntity> {
-    @Query("select c from UserEntity c where c.company.id=:companyId")
-    Page<UserEntity> findAllByCompany(Pageable pageable, @Param("companyId") UUID companyId);
+public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID>,
+        JpaSpecificationExecutor<UserEntity> {
 
-    Optional<UserEntity> findByCompanyIdAndEmail(UUID companyId, String email);
-
-    @EntityGraph(attributePaths = {
-            "company",
-            "team"
-    })
-    Optional<UserEntity> findDetailedById(UUID userId);
 
     Optional<UserEntity> findByEmail(String email);
 

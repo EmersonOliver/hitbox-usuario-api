@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -87,25 +88,18 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private Boolean firstLogin;
 
-    /*
-     * Empresa
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "company_id"
-    )
-    private CompanyEntity company;
-
-    /*
-     * Time (opcional)
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private TeamEntity team;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserStatus status;
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<CompanyMembershipEntity> memberships =
+            new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

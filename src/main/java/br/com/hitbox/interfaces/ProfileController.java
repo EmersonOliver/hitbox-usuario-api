@@ -18,12 +18,13 @@ public class ProfileController {
 
     @GetMapping
     public ResponseEntity<UserProfileResponse> profile(
-            @AuthenticationPrincipal AuthenticatedUser user
+            @AuthenticationPrincipal
+            AuthenticatedUser user
     ) {
-
         return ResponseEntity.ok(
                 profileUseCase.load(
-                        user.getUserId()
+                        user.getUserId(),
+                        user.getCompanyId()
                 )
         );
     }

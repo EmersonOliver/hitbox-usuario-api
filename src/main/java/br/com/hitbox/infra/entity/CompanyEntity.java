@@ -69,7 +69,8 @@ public class CompanyEntity {
             orphanRemoval = true
     )
     @Builder.Default
-    private List<TeamEntity> teams = new ArrayList<>();
+    private List<CompanyMembershipEntity> memberships =
+            new ArrayList<>();
 
 
     @Column(name = "slug", unique = true)

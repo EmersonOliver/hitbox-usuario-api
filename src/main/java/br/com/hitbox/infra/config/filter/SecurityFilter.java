@@ -30,38 +30,59 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain chain)
+            FilterChain chain
+    )
             throws ServletException, IOException {
 
-        String token = recoverToken(request);
+        String token =
+                recoverToken(request);
 
         if (token != null) {
 
-            String subject =
-                    tokenService.validateToken(token);
-
             UUID userId =
-                    UUID.fromString(subject);
+                    tokenService.getUserId(
+                            token
+                    );
 
             UserEntity user =
-                    userRepository.findById(userId)
-                            .orElseThrow(() ->
-                                    new IllegalArgumentException(
-                                            "Usuário não encontrado"
-                                    ));
+                    userRepository.findById(
+                                    userId
+                            )
+                            .orElseThrow(
+                                    () ->
+                                            new HitboxException(
+                                                    "Usuário não encontrado"
+                                            )
+                            );
 
             AuthenticatedUser principal =
-                    new AuthenticatedUser(
-                            user.getId(),
-
-                            user.getCompany() != null
-                                    ? user.getCompany().getId()
-                                    : null,
-
-                            user.getEmail(),
-
-                            user.getRole()
-                    );
+                    AuthenticatedUser.builder()
+                            .userId(userId)
+                            .companyId(
+                                    tokenService.getCompanyId(token)
+                            )
+                            .teamId(
+                                    tokenService.getTeamId(token)
+                            )
+                            .companyName(
+                                    tokenService.getCompanyName(token)
+                            )
+                            .teamName(
+                                    tokenService.getTeamName(token)
+                            )
+                            .email(
+                                    tokenService.getEmail(token)
+                            )
+                            .fullName(
+                                    tokenService.getFullName(token)
+                            )
+                            .userRole(
+                                    tokenService.getUserRole(token)
+                            )
+                            .teamRole(
+                                    tokenService.getTeamRole(token)
+                            )
+                            .build();
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
@@ -72,10 +93,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             SecurityContextHolder
                     .getContext()
-                    .setAuthentication(authentication);
+                    .setAuthentication(
+                            authentication
+                    );
         }
 
-        chain.doFilter(request, response);
+        chain.doFilter(
+                request,
+                response
+        );
     }
     public String recoverToken(HttpServletRequest httpServletRequest) {
         var authorization = httpServletRequest.getHeader("Authorization");

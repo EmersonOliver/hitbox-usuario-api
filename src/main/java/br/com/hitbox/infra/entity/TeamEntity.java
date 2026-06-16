@@ -65,11 +65,11 @@ public class TeamEntity {
     @OneToMany(
             mappedBy = "team",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
+            orphanRemoval = true
     )
     @Builder.Default
-    private List<UserEntity> members = new ArrayList<>();
+    private List<CompanyMembershipEntity> memberships =
+            new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
