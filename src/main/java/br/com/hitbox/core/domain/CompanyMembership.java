@@ -22,6 +22,22 @@ public class CompanyMembership {
     private TeamRole role;
     private LocalDateTime joinedAt;
     private Boolean active;
+    /*
+     * Dados de leitura
+     */
+
+    private String userName;
+
+    private String userLastname;
+
+    private String userEmail;
+
+    public String getUserFullName() {
+
+        return userLastname == null
+                ? userName
+                : userName + " " + userLastname;
+    }
 
     public void changeRole(TeamRole role) {
         this.role = role;

@@ -35,7 +35,6 @@ public class TeamUseCase {
         var company = companyGateway.findById(companyId).orElseThrow(() -> new HitboxException("Company não existe"));
         var teamDomain = teamMapper.toDomain(teamRequest);
         teamDomain.setCreatedAt(LocalDateTime.now());
-        teamDomain.setActive(Boolean.TRUE);
         teamDomain.setCompanyId(company.getCompanyId());
         return teamGateway.save(teamDomain);
     }

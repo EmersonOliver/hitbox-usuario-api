@@ -6,6 +6,7 @@ import br.com.hitbox.core.domain.User;
 import br.com.hitbox.infra.enums.UserRole;
 import br.com.hitbox.infra.service.TokenService;
 import br.com.hitbox.interfaces.response.OnboardingResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,14 +23,15 @@ public class CompanyOnboardingUseCase {
 
     private final TokenService tokenService;
 
+    @Transactional
     public OnboardingResponse createCompany(UUID userId, Company company) {
         User user = userUseCase.findUserById(userId);
         Company createdCompany = companyUseCase.create(company);
         Team ownerTeam = teamUseCase.createDefaultTeam(createdCompany.getCompanyId());
         membershipUseCase.createOwnerMembership(
-                user.getUserId(),
-                createdCompany.getCompanyId(),
-                ownerTeam.getTeamId()
+                user,
+                createdCompany,
+                ownerTeam
         );
 
         user.setRole(UserRole.OWNER);

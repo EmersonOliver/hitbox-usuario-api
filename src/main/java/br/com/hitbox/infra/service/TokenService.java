@@ -114,7 +114,7 @@ public class TokenService {
                             .withSubject(user.getUserId().toString())
                             .withClaim(
                                     "X-User-Role",
-                                    "ROLE_" + user.getRole().name()
+                                    user.getRole().name()
                             ).withClaim("name", user.getName())
                             .withClaim("fullName", user.getFullName())
                             .withClaim("email", user.getEmail())
@@ -201,7 +201,7 @@ public class TokenService {
 
         String userId =
                 decoded.getClaim(
-                        "X-User-Id"
+                        "sub"
                 ).asString();
 
         return userId != null

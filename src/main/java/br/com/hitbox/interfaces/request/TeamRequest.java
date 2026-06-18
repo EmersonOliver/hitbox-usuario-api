@@ -13,6 +13,7 @@ import java.util.UUID;
 public class TeamRequest {
 
     private UUID companyId;
+    private UUID userId;
     private String teamName;
     private String description;
     private Boolean active;

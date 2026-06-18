@@ -52,7 +52,7 @@ public class LoginService {
                     .email(user.getEmail())
                     .userName(user.getFullName())
                     .firstLogin(user.getFirstLogin())
-                    .temporaryToken(temporaryToken)
+                    .token(temporaryToken)
                     .companies(
                             memberships.stream()
                                     .map(m ->

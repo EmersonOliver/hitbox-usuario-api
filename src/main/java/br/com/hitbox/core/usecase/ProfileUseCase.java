@@ -6,7 +6,7 @@ import br.com.hitbox.core.gateway.CompanyMembershipGateway;
 import br.com.hitbox.core.gateway.UserGateway;
 import br.com.hitbox.infra.exceptions.HitboxException;
 import br.com.hitbox.interfaces.response.CompanyProfileResponse;
-import br.com.hitbox.interfaces.response.TeamProfileResponse;
+import br.com.hitbox.interfaces.response.TeamMemberResponse;
 import br.com.hitbox.interfaces.response.UserProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -55,8 +55,8 @@ public class ProfileUseCase {
                         .id(membership.getCompanyId())
                         .name(membership.getCompanyName())
                         .build()
-                ).team(TeamProfileResponse.builder()
-                        .id(membership.getTeamId())
+                ).team(TeamMemberResponse.builder()
+                        .teamId(membership.getTeamId())
                         .name(membership.getTeamName())
                         .build()
                 )
