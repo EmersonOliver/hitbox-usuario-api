@@ -6,11 +6,14 @@ import br.com.hitbox.core.gateway.UserGateway;
 import br.com.hitbox.infra.enums.UserRole;
 import br.com.hitbox.infra.enums.UserStatus;
 import br.com.hitbox.infra.exceptions.HitboxException;
+import br.com.hitbox.infra.exceptions.HitboxUnauthorizedException;
+import br.com.hitbox.security.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Year;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -35,9 +38,13 @@ public class UserUseCase {
         return userGateway.save(user);
     }
 
-    public User create(User user) {
+    public User create(User user, AuthenticatedUser authenticatedUser) {
+        if (!authenticatedUser.getUserRole().equals(UserRole.OWNER)
+                && !authenticatedUser.getUserRole().equals(UserRole.ADMIN)) {
+            throw new HitboxUnauthorizedException("Seu perfil não tem permissão!");
+        }
         userGateway.findByEmail(
-                        user.getCompanyId(),
+                        authenticatedUser.getCompanyId(),
                         user.getEmail()
                 )
                 .ifPresent(existing -> {
@@ -45,6 +52,7 @@ public class UserUseCase {
                             "Já existe um usuário com este email."
                     );
                 });
+
         user.setPassword(
                 passwordEncoder.encode(
                         user.getPassword()
@@ -63,8 +71,8 @@ public class UserUseCase {
                                 "Usuário não encontrado."
                         ));
     }
-    
-    public User findUserById(UUID userId){
+
+    public User findUserById(UUID userId) {
         return userGateway.findById(userId)
                 .orElseThrow(() ->
                         new HitboxException(
@@ -148,6 +156,11 @@ public class UserUseCase {
     }
 
     public void update(UUID userId, User user) {
-         userGateway.update(user, userId);
+        userGateway.update(user, userId);
+    }
+
+    public List<User> listUsersByRoleAndCompany(AuthenticatedUser user, UserRole userRole) {
+        return userGateway.loadByRolesAndCompany(userRole, user.getCompanyId());
+
     }
 }

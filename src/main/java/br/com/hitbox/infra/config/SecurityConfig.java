@@ -32,10 +32,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/create").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/company/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/profile/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/profile/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/profile/**").authenticated())
+                        .requestMatchers(HttpMethod.PUT, "/profile/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/team/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/team/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/team/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/team/**").authenticated()
+                )
+
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

@@ -20,7 +20,14 @@ public class UserMapper {
     }
 
     public UserResponse toResponse(User domain) {
-        return UserResponse.builder().build();
+        return UserResponse.builder()
+                .userId(domain.getUserId())
+                .fullName(domain.getFullName())
+                .name(domain.getName())
+                .email(domain.getEmail())
+                .avatarUrl(domain.getAvatarUrl())
+                .lastName(domain.getLastname())
+                .build();
     }
 
 }

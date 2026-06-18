@@ -5,18 +5,21 @@ import br.com.hitbox.core.gateway.TeamGateway;
 import br.com.hitbox.infra.entity.CompanyEntity;
 import br.com.hitbox.infra.entity.TeamEntity;
 import br.com.hitbox.infra.jpa.SpringDataTeamRepository;
+import br.com.hitbox.infra.mapper.TeamEntityMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.parser.TE;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
 public class TeamPersistenceRepository implements TeamGateway {
 
     private final SpringDataTeamRepository teamRepository;
+    private final TeamEntityMapper mapper;
 
     @Override
-
     public Team save(Team domain) {
         TeamEntity teamEntity = TeamEntity.builder()
                 .defaultTeam(Boolean.TRUE)
@@ -33,5 +36,16 @@ public class TeamPersistenceRepository implements TeamGateway {
                 .active(persisted.getActive())
                 .createdAt(persisted.getCreatedAt())
                 .build();
+    }
+
+    @Override
+    public Team update(Team team) {
+        var teamEntity = mapper.toEntity(team);
+        return mapper.toDomain(teamRepository.save(teamEntity));
+    }
+
+    @Override
+    public Optional<Team> findById(UUID id) {
+        return Optional.empty();
     }
 }

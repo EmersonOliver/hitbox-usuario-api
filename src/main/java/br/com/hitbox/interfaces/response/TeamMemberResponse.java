@@ -1,7 +1,6 @@
 package br.com.hitbox.interfaces.response;
 
 import br.com.hitbox.infra.enums.TeamRole;
-import br.com.hitbox.infra.enums.UserRole;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,29 +11,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserProfileResponse {
-
-    private UUID id;
-
+public class TeamMemberResponse {
+    private UUID membershipId;
+    private UUID teamId;
+    private UUID userId;
     private String name;
-
     private String lastname;
-
     private String fullName;
-
     private String email;
-
-    private String avatarUrl;
-
+    private TeamRole role;
     private Boolean active;
-
-    private UserRole role;
-
-    private TeamRole teamRole;
-
-    private CompanyProfileResponse company;
-
-    private TeamMemberResponse team;
-
-    private LocalDateTime datetimeLastLogin;
+    private LocalDateTime joinedAt;
 }
