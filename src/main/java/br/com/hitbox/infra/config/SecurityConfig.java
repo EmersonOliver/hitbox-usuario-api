@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/create").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/test-mail").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/company/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/profile/**").authenticated()
@@ -41,6 +42,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/team/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/team/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/team/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/membership/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/membership/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/membership/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/membership/**").authenticated()
                 )
 
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
