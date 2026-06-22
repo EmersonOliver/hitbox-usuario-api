@@ -1,6 +1,7 @@
 package br.com.hitbox.infra.entity;
 
 import br.com.hitbox.infra.enums.RequestStatus;
+import br.com.hitbox.infra.enums.TeamRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,19 +18,32 @@ import java.util.UUID;
 public class CompanyMembershipRequestEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    private UserEntity user;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
     private CompanyEntity company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private TeamEntity team;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    private TeamRole role;
+
+    @Column(nullable = false, unique = true, columnDefinition = "TEXT")
+    private String invitationToken;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
 
     private LocalDateTime requestedAt;
+
+    @Column(nullable = false)
+    private LocalDateTime expiresAt;
 
     private LocalDateTime approvedAt;
 }

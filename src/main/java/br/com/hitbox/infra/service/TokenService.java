@@ -1,10 +1,12 @@
 package br.com.hitbox.infra.service;
 
 import br.com.hitbox.core.domain.Company;
+import br.com.hitbox.core.domain.Team;
 import br.com.hitbox.core.domain.User;
 import br.com.hitbox.infra.entity.UserEntity;
 import br.com.hitbox.infra.enums.TeamRole;
 import br.com.hitbox.infra.enums.UserRole;
+import br.com.hitbox.interfaces.request.CompanyMembershipRequest;
 import br.com.hitbox.security.AuthenticatedUser;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -30,63 +32,50 @@ public class TokenService {
 
     public String generateToken(AuthenticatedUser context) {
         try {
-
             Algorithm algorithm =
                     Algorithm.HMAC256(secret);
-
             return JWT.create()
-
                     .withIssuer("erp-hitbox")
-
                     .withSubject(
                             context.getUserId()
                                     .toString()
                     )
-
                     .withClaim(
                             "X-User-Role",
                             context.getUserRole()
                                     .name()
                     )
-
                     .withClaim(
                             "X-Team-Role",
                             context.getTeamRole()
                                     .name()
                     )
-
                     .withClaim(
                             "X-Company-Id",
                             context.getCompanyId()
                                     .toString()
                     )
-
                     .withClaim(
                             "X-Team-Id",
                             context.getTeamId()
                                     .toString()
                     )
-
                     .withClaim(
                             "companyName",
                             context.getCompanyName()
                     )
-
                     .withClaim(
                             "teamName",
                             context.getTeamName()
                     )
-
                     .withClaim(
                             "email",
                             context.getEmail()
                     )
-
                     .withClaim(
                             "fullName",
                             context.getFullName()
                     )
-
                     .withExpiresAt(
                             generateExpirationDate()
                     )
@@ -94,12 +83,57 @@ public class TokenService {
                     .sign(algorithm);
 
         } catch (Exception e) {
+            log.error("Erro ao gerar token", e);
+            throw e;
+        }
+    }
 
-            log.error(
-                    "Erro ao gerar token",
-                    e
-            );
+    public String generateInviteToken(UUID requestId, Company company,
+                                      Team team, CompanyMembershipRequest request) {
+        try {
+            Algorithm algorithm =
+                    Algorithm.HMAC256(secret);
+            return JWT.create()
+                    .withIssuer("erp-hitbox")
+                    .withSubject(
+                            requestId
+                                    .toString()
+                    )
+                    .withClaim(
+                            "X-Team-Role",
+                            request.getRole()
+                                    .name()
+                    )
+                    .withClaim(
+                            "X-Company-Id",
+                            company.getCompanyId()
+                                    .toString()
+                    )
+                    .withClaim(
+                            "X-Team-Id",
+                            team.getTeamId()
+                                    .toString()
+                    )
+                    .withClaim(
+                            "companyName",
+                            company.getCompanyName()
+                    )
+                    .withClaim(
+                            "teamName",
+                            team.getTeamName()
+                    )
+                    .withClaim(
+                            "email",
+                            request.getEmail()
+                    )
+                    .withExpiresAt(
+                            LocalDateTime.now().plusHours(1)
+                                    .toInstant(ZoneOffset.of("-03:00"))
+                    )
+                    .sign(algorithm);
 
+        } catch (Exception e) {
+            log.error("Erro ao gerar token", e);
             throw e;
         }
     }
