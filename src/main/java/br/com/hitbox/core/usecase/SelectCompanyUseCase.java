@@ -10,6 +10,9 @@ import br.com.hitbox.interfaces.response.SelectCompanyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class SelectCompanyUseCase {
@@ -47,5 +50,16 @@ public class SelectCompanyUseCase {
                 .companyId(company.getCompanyId())
                 .companyName(company.getCompanyName())
                 .build();
+    }
+
+    public List<SelectCompanyResponse> loadCompanyByUser(UUID userId) {
+
+        var membership = membershipGateway.findByUserId(userId);
+        return membership.stream().map(res-> SelectCompanyResponse.builder()
+                .userId(userId)
+                .companyId(res.getCompanyId())
+                .userName(res.getUserName())
+                .companyName(res.getCompanyName())
+                .build()).toList();
     }
 }

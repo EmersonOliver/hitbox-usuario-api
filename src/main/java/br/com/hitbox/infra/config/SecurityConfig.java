@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/test-mail").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/company/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/company/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/profile/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/profile/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/profile/**").authenticated()

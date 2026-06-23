@@ -1,22 +1,21 @@
 package br.com.hitbox.interfaces;
 
-import br.com.hitbox.core.usecase.CompanyUseCase;
 import br.com.hitbox.core.usecase.CompanyOnboardingUseCase;
+import br.com.hitbox.core.usecase.CompanyUseCase;
 import br.com.hitbox.core.usecase.SelectCompanyUseCase;
 import br.com.hitbox.interfaces.mapper.CompanyMapper;
 import br.com.hitbox.interfaces.request.CompanyRequest;
 import br.com.hitbox.interfaces.request.SelectCompanyRequest;
-import br.com.hitbox.interfaces.response.LoginResponse;
 import br.com.hitbox.interfaces.response.OnboardingResponse;
 import br.com.hitbox.interfaces.response.SelectCompanyResponse;
 import br.com.hitbox.security.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,5 +44,12 @@ public class CompanyController {
                 selectCompanyUseCase
                         .execute(request)
         );
+    }
+
+    @GetMapping("/user/companys")
+    public ResponseEntity<List<SelectCompanyResponse>> loadCompanyByUserId(@RequestParam UUID userId) {
+        var response = selectCompanyUseCase.loadCompanyByUser(userId);
+        return ResponseEntity.ok(response);
+
     }
 }

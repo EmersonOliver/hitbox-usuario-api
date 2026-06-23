@@ -42,7 +42,7 @@ import java.util.UUID;
                 )
         }
 )
-public class UserEntity implements UserDetails {
+    public class UserEntity implements UserDetails {
 
     @Id
     @Column(name = "user_id")

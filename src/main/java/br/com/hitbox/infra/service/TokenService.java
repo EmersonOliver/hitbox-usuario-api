@@ -105,6 +105,11 @@ public class TokenService {
                                     .name()
                     )
                     .withClaim(
+                            "X-User-Role",
+                            request.getUserRole()
+                                    .name()
+                    )
+                    .withClaim(
                             "X-Company-Id",
                             company.getCompanyId()
                                     .toString()

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -20,4 +21,6 @@ public class CompleteRegistrationResponse {
     private String email;
     private Boolean success;
     private String message;
+    private String token;
+    private List<CompanySelectionResponse> companies;
 }

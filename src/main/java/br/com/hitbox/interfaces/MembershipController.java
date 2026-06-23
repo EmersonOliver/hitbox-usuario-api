@@ -42,7 +42,6 @@ public class MembershipController {
     public ResponseEntity<CompleteRegistrationResponse> completeRegistration(
             @RequestBody CompleteRegistrationRequest request
     ) {
-
         return ResponseEntity.ok(
                 completeRegistrationUseCase.complete(request)
         );

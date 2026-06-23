@@ -2,6 +2,7 @@ package br.com.hitbox.infra.entity;
 
 import br.com.hitbox.infra.enums.RequestStatus;
 import br.com.hitbox.infra.enums.TeamRole;
+import br.com.hitbox.infra.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 

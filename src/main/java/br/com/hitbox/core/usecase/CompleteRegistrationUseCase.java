@@ -1,27 +1,35 @@
 package br.com.hitbox.core.usecase;
 
+import br.com.hitbox.core.domain.Company;
 import br.com.hitbox.core.domain.CompanyMembership;
 import br.com.hitbox.core.domain.User;
+import br.com.hitbox.core.gateway.CompanyGateway;
 import br.com.hitbox.core.gateway.CompanyMembershipGateway;
 import br.com.hitbox.core.gateway.CompanyMembershipRequestGateway;
 import br.com.hitbox.core.gateway.UserGateway;
 import br.com.hitbox.infra.enums.RequestStatus;
 import br.com.hitbox.infra.enums.UserRole;
 import br.com.hitbox.infra.enums.UserStatus;
+import br.com.hitbox.infra.exceptions.HitboxException;
 import br.com.hitbox.infra.service.TokenService;
 import br.com.hitbox.interfaces.request.CompanyMembershipRequest;
 import br.com.hitbox.interfaces.request.CompleteRegistrationRequest;
+import br.com.hitbox.interfaces.response.CompanySelectionResponse;
 import br.com.hitbox.interfaces.response.CompleteRegistrationResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class CompleteRegistrationUseCase {
 
     private final UserGateway userGateway;
+
+    private final CompanyGateway companyGateway;
 
     private final CompanyMembershipGateway membershipGateway;
 
@@ -42,6 +50,9 @@ public class CompleteRegistrationUseCase {
                         request.token()
                 ).orElseThrow();
 
+        Company company = companyGateway.findById(invitation.getCompanyId()).orElseThrow(() ->
+                new HitboxException("Falha ao validar a company requisitada!"));
+
         User user = User.builder()
                 .name(request.name())
                 .lastname(request.lastname())
@@ -52,13 +63,14 @@ public class CompleteRegistrationUseCase {
                 )
                 .email(tokenService.getEmail(request.token()))
                 .active(Boolean.TRUE)
-                .role(UserRole.MANAGER)
+                .role(request.userRole())
                 .status(UserStatus.ACTIVE)
                 .emailVerified(Boolean.TRUE)
                 .firstLogin(Boolean.TRUE)
-
                 .build();
         user = userGateway.save(user);
+
+        String token = tokenService.generateToken(user, company);
 
         membershipGateway.save(
                 CompanyMembership.builder()
@@ -78,6 +90,11 @@ public class CompleteRegistrationUseCase {
                 invitation
         );
 
+        List<CompanyMembership> memberships =
+                membershipGateway.findByUserId(
+                        user.getUserId()
+                );
+
         return CompleteRegistrationResponse.builder()
                 .userId(user.getUserId())
                 .companyId(invitation.getCompanyId())
@@ -85,6 +102,17 @@ public class CompleteRegistrationUseCase {
                 .email(user.getEmail())
                 .fullName(user.getFullName())
                 .success(true)
+                .token(token)
+                .companies( memberships.stream()
+                        .map(m ->
+                                CompanySelectionResponse.builder()
+                                        .companyId(m.getCompanyId())
+                                        .companyName(m.getCompanyName())
+                                        .teamId(m.getTeamId())
+                                        .teamName(m.getTeamName())
+                                        .teamRole(m.getRole())
+                                        .build())
+                        .toList())
                 .message("Cadastro realizado com sucesso")
                 .build();
     }

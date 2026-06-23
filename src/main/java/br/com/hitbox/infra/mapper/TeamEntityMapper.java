@@ -26,6 +26,7 @@ public class TeamEntityMapper {
                 .teamName(domain.getTeamName())
                 .description(domain.getDescription())
                 .active(domain.getActive())
+                .teamRole(domain.getTeamRole())
                 .build();
     }
 
@@ -56,6 +57,7 @@ public class TeamEntityMapper {
                 .updatedAt(entity.getUpdatedAt())
                 .teamName(entity.getTeamName())
                 .description(entity.getDescription())
+                .teamRole(entity.getTeamRole())
                 .memberships(
                         memberships
                 )

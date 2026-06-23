@@ -1,6 +1,7 @@
 package br.com.hitbox.core.domain;
 
 import br.com.hitbox.infra.enums.TeamRole;
+import br.com.hitbox.infra.enums.UserRole;
 import lombok.*;
 
 import java.time.LocalDateTime;

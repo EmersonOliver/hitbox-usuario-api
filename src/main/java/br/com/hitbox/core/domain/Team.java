@@ -1,6 +1,7 @@
 package br.com.hitbox.core.domain;
 
 import br.com.hitbox.infra.enums.TeamRole;
+import br.com.hitbox.interfaces.request.CompanyMembershipRequest;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,12 +20,17 @@ public class Team {
     private String teamName;
     private String description;
     private Boolean active;
+    private TeamRole teamRole;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer totalMembers;
 
     @Builder.Default
     private List<CompanyMembership> memberships =
+            new ArrayList<>();
+
+    @Builder.Default
+    private List<CompanyMembershipRequest> pendingInvitations =
             new ArrayList<>();
 
     public Integer countTotalMembers() {
