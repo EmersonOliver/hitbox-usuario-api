@@ -1,5 +1,6 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.infra.enums.TeamRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,6 +46,9 @@ public class TeamEntity {
             length = 120
     )
     private String teamName;
+
+    @Enumerated(EnumType.STRING)
+    private TeamRole teamRole;
 
     @Column(length = 500)
     private String description;

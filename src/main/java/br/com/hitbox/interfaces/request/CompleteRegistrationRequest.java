@@ -1,7 +1,10 @@
 package br.com.hitbox.interfaces.request;
 
-public record CompleteRegistrationRequest( String token,
-                                           String name,
-                                           String lastname,
-                                           String password) {
+import br.com.hitbox.infra.enums.UserRole;
+
+public record CompleteRegistrationRequest(String token,
+                                          String name,
+                                          String lastname,
+                                          String password,
+                                          UserRole userRole) {
 }

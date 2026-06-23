@@ -2,10 +2,8 @@ package br.com.hitbox.infra.mapper;
 
 
 import br.com.hitbox.core.domain.CompanyMembership;
-import br.com.hitbox.infra.entity.CompanyEntity;
-import br.com.hitbox.infra.entity.CompanyMembershipEntity;
-import br.com.hitbox.infra.entity.TeamEntity;
-import br.com.hitbox.infra.entity.UserEntity;
+import br.com.hitbox.infra.entity.*;
+import br.com.hitbox.interfaces.request.CompanyMembershipRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -40,6 +38,26 @@ public class CompanyMembershipEntityMapper {
                 .role(domain.getRole())
                 .joinedAt(LocalDateTime.now())
                 .active(domain.getActive())
+                .build();
+    }
+
+    public CompanyMembershipRequest requestToDomain(
+            CompanyMembershipRequestEntity entity
+    ) {
+
+        return CompanyMembershipRequest.builder()
+                .requestId(entity.getId())
+                .companyId(entity.getCompany().getId())
+                .role(entity.getRole())
+                .teamId(
+                        entity.getTeam() != null
+                                ? entity.getTeam().getId()
+                                : null
+                )
+                .email(entity.getEmail())
+                .requestedAt(entity.getRequestedAt())
+                .status(entity.getStatus())
+                .expiresAt(entity.getExpiresAt())
                 .build();
     }
 }

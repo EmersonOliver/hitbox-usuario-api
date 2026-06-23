@@ -1,8 +1,11 @@
 package br.com.hitbox.core.usecase;
 
+import br.com.hitbox.core.domain.Team;
 import br.com.hitbox.core.gateway.CompanyMembershipRequestGateway;
 import br.com.hitbox.core.gateway.MailGateway;
+import br.com.hitbox.core.gateway.TeamGateway;
 import br.com.hitbox.infra.enums.RequestStatus;
+import br.com.hitbox.infra.exceptions.HitboxException;
 import br.com.hitbox.interfaces.request.CompanyMembershipRequest;
 import br.com.hitbox.interfaces.request.InviteMemberRequest;
 import br.com.hitbox.interfaces.response.InvitationDetailsResponse;
@@ -17,6 +20,7 @@ import java.util.UUID;
 public class MembershipInvitationUseCase {
 
     private final CompanyMembershipRequestGateway gateway;
+    private final TeamGateway teamGateway;
     private final MailGateway mailGateway;
 
     public void invite(
@@ -26,12 +30,16 @@ public class MembershipInvitationUseCase {
         String token =
                 UUID.randomUUID().toString();
 
+        Team team = teamGateway.findById(request.teamId())
+                .orElseThrow(()-> new HitboxException("Time não encontrado!"));
+
         CompanyMembershipRequest invitation =
                 CompanyMembershipRequest.builder()
                         .companyId(request.companyId())
                         .teamId(request.teamId())
                         .email(request.email())
-                        .role(request.role())
+                        .role(team.getTeamRole())
+                        .userRole(request.userRole())
                         .invitationToken(token)
                         .status(RequestStatus.PENDING)
                         .requestedAt(LocalDateTime.now())

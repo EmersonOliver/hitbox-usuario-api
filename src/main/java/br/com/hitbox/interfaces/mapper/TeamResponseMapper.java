@@ -21,10 +21,12 @@ public class TeamResponseMapper {
                 .teamId(team.getTeamId())
                 .companyId(team.getCompanyId())
                 .teamName(team.getTeamName())
+                .teamRole(team.getTeamRole())
                 .description(team.getDescription())
                 .active(team.getActive())
                 .createdAt(team.getCreatedAt())
                 .updatedAt(team.getUpdatedAt())
+
                 .totalMembers(
                         team.countTotalMembers()
                 )

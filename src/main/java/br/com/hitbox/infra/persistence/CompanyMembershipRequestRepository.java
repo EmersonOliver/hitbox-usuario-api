@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import static br.com.hitbox.infra.enums.RequestStatus.APPROVED;
+
 @Repository
 @RequiredArgsConstructor
 public class CompanyMembershipRequestRepository implements CompanyMembershipRequestGateway {
@@ -56,7 +58,7 @@ public class CompanyMembershipRequestRepository implements CompanyMembershipRequ
 
     @Override
     public Optional<CompanyMembershipRequest> findByToken(String token) {
-        return repository.findByToken(token).map(rs-> CompanyMembershipRequest.builder()
+        return repository.findByToken(token).map(rs -> CompanyMembershipRequest.builder()
                 .invitationToken(rs.getInvitationToken())
                 .email(rs.getEmail())
                 .requestedAt(rs.getRequestedAt())
@@ -76,10 +78,13 @@ public class CompanyMembershipRequestRepository implements CompanyMembershipRequ
 
     @Override
     public void update(CompanyMembershipRequest request) {
-        CompanyMembershipRequestEntity entity =  repository.findById(request.getRequestId()).
-                orElseThrow(()-> new HitboxException("Request not found"));
-
+        CompanyMembershipRequestEntity entity = repository.findById(request.getRequestId()).
+                orElseThrow(() -> new HitboxException("Request not found"));
         entity.setStatus(request.getStatus());
+        if (APPROVED.equals(entity.getStatus())) {
+            entity.setApprovedAt(LocalDateTime.now());
+        }
+
 
     }
 
