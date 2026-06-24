@@ -18,7 +18,6 @@ public class TeamMapper {
         team.teamName(request.getTeamName());
         team.description(request.getDescription());
         team.active(request.getActive());
-        team.teamRole(request.getTeamRole());
         return team.build();
     }
 

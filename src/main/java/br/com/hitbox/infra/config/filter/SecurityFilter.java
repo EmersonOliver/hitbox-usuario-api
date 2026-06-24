@@ -79,9 +79,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                             .userRole(
                                     tokenService.getUserRole(token)
                             )
-                            .teamRole(
-                                    tokenService.getTeamRole(token)
-                            )
                             .build();
 
             UsernamePasswordAuthenticationToken authentication =

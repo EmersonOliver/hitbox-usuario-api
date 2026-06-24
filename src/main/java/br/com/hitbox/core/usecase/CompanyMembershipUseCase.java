@@ -5,12 +5,10 @@ import br.com.hitbox.core.domain.CompanyMembership;
 import br.com.hitbox.core.domain.Team;
 import br.com.hitbox.core.domain.User;
 import br.com.hitbox.core.gateway.CompanyMembershipGateway;
-import br.com.hitbox.infra.enums.TeamRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +27,6 @@ public class CompanyMembershipUseCase {
                         .userId(user.getUserId())
                         .companyId(company.getCompanyId())
                         .teamId(team.getTeamId())
-                        .role(TeamRole.OWNER)
                         .active(true)
                         .joinedAt(LocalDateTime.now())
                         .build();

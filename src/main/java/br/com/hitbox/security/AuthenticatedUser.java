@@ -1,12 +1,12 @@
 package br.com.hitbox.security;
 
-import br.com.hitbox.infra.enums.TeamRole;
 import br.com.hitbox.infra.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -30,19 +30,8 @@ public class AuthenticatedUser {
 
     private UserRole userRole;
 
-    private TeamRole teamRole;
 
-    public boolean isOwner() {
-        return TeamRole.OWNER.equals(teamRole);
-    }
-
-    public boolean isManager() {
-        return TeamRole.MANAGER.equals(teamRole);
-    }
-
-    public boolean isMember() {
-        return TeamRole.MEMBER.equals(teamRole);
-    }
+    private Set<String> permissions;
 
     public boolean hasCompany() {
         return companyId != null;

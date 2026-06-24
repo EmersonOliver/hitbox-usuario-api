@@ -50,7 +50,6 @@ public class ProfileUseCase {
                 .avatarUrl(user.getAvatarUrl())
                 .active(user.getActive())
                 .role(user.getRole())
-                .teamRole(membership.getRole())
                 .company(CompanyProfileResponse.builder()
                         .id(membership.getCompanyId())
                         .name(membership.getCompanyName())

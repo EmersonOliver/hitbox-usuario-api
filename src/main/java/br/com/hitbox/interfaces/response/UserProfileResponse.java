@@ -1,6 +1,5 @@
 package br.com.hitbox.interfaces.response;
 
-import br.com.hitbox.infra.enums.TeamRole;
 import br.com.hitbox.infra.enums.UserRole;
 import lombok.*;
 
@@ -30,7 +29,6 @@ public class UserProfileResponse {
 
     private UserRole role;
 
-    private TeamRole teamRole;
 
     private CompanyProfileResponse company;
 

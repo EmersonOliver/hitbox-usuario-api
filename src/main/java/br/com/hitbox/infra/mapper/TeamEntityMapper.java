@@ -26,7 +26,6 @@ public class TeamEntityMapper {
                 .teamName(domain.getTeamName())
                 .description(domain.getDescription())
                 .active(domain.getActive())
-                .teamRole(domain.getTeamRole())
                 .build();
     }
 
@@ -36,7 +35,6 @@ public class TeamEntityMapper {
             var membershipsEntityList = entity.getMemberships();
             membershipsEntityList.stream().map(rs ->
                     CompanyMembership.builder()
-                            .role(rs.getRole())
                             .teamId(rs.getTeam().getId())
                             .companyName(rs.getCompany().getCompanyName())
                             .userId(rs.getUser().getId())
@@ -57,7 +55,6 @@ public class TeamEntityMapper {
                 .updatedAt(entity.getUpdatedAt())
                 .teamName(entity.getTeamName())
                 .description(entity.getDescription())
-                .teamRole(entity.getTeamRole())
                 .memberships(
                         memberships
                 )

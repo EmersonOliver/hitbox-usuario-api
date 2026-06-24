@@ -21,7 +21,6 @@ public class TeamResponseMapper {
                 .teamId(team.getTeamId())
                 .companyId(team.getCompanyId())
                 .teamName(team.getTeamName())
-                .teamRole(team.getTeamRole())
                 .description(team.getDescription())
                 .active(team.getActive())
                 .createdAt(team.getCreatedAt())
@@ -64,9 +63,7 @@ public class TeamResponseMapper {
                 .email(
                         membership.getUserEmail()
                 )
-                .role(
-                        membership.getRole()
-                )
+
                 .active(
                         membership.getActive()
                 )

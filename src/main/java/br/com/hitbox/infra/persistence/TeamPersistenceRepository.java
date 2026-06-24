@@ -24,7 +24,6 @@ public class TeamPersistenceRepository implements TeamGateway {
         TeamEntity teamEntity = TeamEntity.builder()
                 .defaultTeam(Boolean.TRUE)
                 .teamName(domain.getTeamName())
-                .teamRole(domain.getTeamRole())
                 .active(domain.getActive())
                 .company(CompanyEntity.builder().id(domain.getCompanyId()).build())
                 .createdAt(domain.getCreatedAt())
@@ -36,7 +35,6 @@ public class TeamPersistenceRepository implements TeamGateway {
                 .companyId(persisted.getCompany().getId())
                 .teamName(persisted.getTeamName())
                 .active(persisted.getActive())
-                .teamRole(domain.getTeamRole())
                 .createdAt(persisted.getCreatedAt())
                 .build();
     }

@@ -61,7 +61,6 @@ public class LoginService {
                                                     .companyName(m.getCompanyName())
                                                     .teamId(m.getTeamId())
                                                     .teamName(m.getTeamName())
-                                                    .teamRole(m.getRole())
                                                     .build())
                                     .toList()
                     ).build();

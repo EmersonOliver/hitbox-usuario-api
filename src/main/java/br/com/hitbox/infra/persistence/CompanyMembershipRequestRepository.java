@@ -35,7 +35,6 @@ public class CompanyMembershipRequestRepository implements CompanyMembershipRequ
         CompanyMembershipRequestEntity entity = CompanyMembershipRequestEntity.builder()
                 .id(requestId)
                 .requestedAt(LocalDateTime.now())
-                .role(request.getRole())
                 .expiresAt(LocalDateTime.now().plusHours(1))
                 .status(RequestStatus.PENDING)
                 .email(request.getEmail())
@@ -51,7 +50,6 @@ public class CompanyMembershipRequestRepository implements CompanyMembershipRequ
                 .expiresAt(entity.getExpiresAt())
                 .teamId(entity.getTeam().getId())
                 .companyId(entity.getCompany().getId())
-                .role(entity.getRole())
                 .status(entity.getStatus())
                 .build();
     }
@@ -66,7 +64,6 @@ public class CompanyMembershipRequestRepository implements CompanyMembershipRequ
                 .teamId(rs.getTeam().getId())
                 .status(rs.getStatus())
                 .expiresAt(rs.getExpiresAt())
-                .role(rs.getRole())
                 .companyId(rs.getCompany().getId())
                 .build());
     }
