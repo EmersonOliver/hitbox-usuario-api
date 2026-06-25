@@ -31,8 +31,51 @@ public class Team {
     private List<CompanyMembershipRequest> pendingInvitations =
             new ArrayList<>();
 
+    @Builder.Default
+    private List<TeamPermission> permissions =
+            new ArrayList<>();
+
     public Integer countTotalMembers() {
         return memberships.size();
+    }
+
+
+    public void addPermission(UUID modulePermissionId) {
+
+        boolean alreadyExists =
+                permissions.stream()
+                        .anyMatch(permission ->
+                                permission.getModulePermissionId()
+                                        .equals(modulePermissionId)
+                        );
+
+        if (alreadyExists) {
+            return;
+        }
+
+        permissions.add(
+                TeamPermission.builder()
+                        .teamId(this.teamId)
+                        .modulePermissionId(modulePermissionId)
+                        .build()
+        );
+    }
+
+    public void removePermission(UUID modulePermissionId) {
+
+        permissions.removeIf(permission ->
+                permission.getModulePermissionId()
+                        .equals(modulePermissionId)
+        );
+    }
+
+    public boolean hasPermission(UUID modulePermissionId) {
+
+        return permissions.stream()
+                .anyMatch(permission ->
+                        permission.getModulePermissionId()
+                                .equals(modulePermissionId)
+                );
     }
 
     public void addMember(

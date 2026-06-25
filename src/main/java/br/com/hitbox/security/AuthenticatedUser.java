@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cache.annotation.Cacheable;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,7 +15,11 @@ import java.util.UUID;
 @Setter
 @Builder
 @AllArgsConstructor
-public class AuthenticatedUser {
+//@Cacheable(
+//        value = "user-context",
+//        key = "#userId + ':' + #companyId"
+//)
+public class AuthenticatedUser implements Serializable {
     private UUID userId;
 
     private UUID companyId;

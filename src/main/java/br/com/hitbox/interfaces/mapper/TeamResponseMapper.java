@@ -67,6 +67,7 @@ public class TeamResponseMapper {
                 .active(
                         membership.getActive()
                 )
+                .role(membership.getUserRole())
                 .joinedAt(
                         membership.getJoinedAt()
                 )

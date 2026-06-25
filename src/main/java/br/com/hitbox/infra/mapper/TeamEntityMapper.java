@@ -2,8 +2,11 @@ package br.com.hitbox.infra.mapper;
 
 import br.com.hitbox.core.domain.CompanyMembership;
 import br.com.hitbox.core.domain.Team;
+import br.com.hitbox.core.domain.TeamPermission;
 import br.com.hitbox.infra.entity.CompanyEntity;
+import br.com.hitbox.infra.entity.ModulePermissionEntity;
 import br.com.hitbox.infra.entity.TeamEntity;
+import br.com.hitbox.infra.entity.TeamPermissionEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -45,6 +48,7 @@ public class TeamEntityMapper {
                             .joinedAt(rs.getJoinedAt())
                             .teamName(rs.getTeam().getTeamName())
                             .active(rs.getActive())
+                            .userRole(rs.getUser().getRole())
                             .build()).forEach(memberships::add);
         }
         return Team.builder()
@@ -61,4 +65,37 @@ public class TeamEntityMapper {
                 .build();
     }
 
+    public TeamPermission toDomain(
+            TeamPermissionEntity entity
+    ) {
+
+        return TeamPermission.builder()
+                .teamPermissionId(entity.getId())
+                .teamId(entity.getTeam().getId())
+                .modulePermissionId(
+                        entity.getPermission().getId()
+                )
+                .permissionCode(
+                        entity.getPermission().getCode()
+                )
+                .build();
+    }
+
+    public TeamPermissionEntity toEntity(
+            TeamPermission domain) {
+
+        return TeamPermissionEntity.builder()
+                .id(domain.getTeamPermissionId())
+                .team(
+                        TeamEntity.builder()
+                                .id(domain.getTeamId())
+                                .build()
+                )
+                .permission(
+                        ModulePermissionEntity.builder()
+                                .id(domain.getModulePermissionId())
+                                .build()
+                )
+                .build();
+    }
 }

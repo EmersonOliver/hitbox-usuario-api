@@ -42,7 +42,6 @@ public class TeamQueryService {
                                         rs -> rs.getTeam().getId()
                                 )
                         );
-        var members = teamRepository.findAll(specs, pageable).map(mapper::toDomain);
         var teams =
                 teamRepository
                         .findAll(specs, pageable)

@@ -1,5 +1,6 @@
 package br.com.hitbox.interfaces.response;
 
+import br.com.hitbox.infra.enums.UserRole;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,5 +20,6 @@ public class TeamMemberResponse {
     private String fullName;
     private String email;
     private Boolean active;
+    private UserRole role;
     private LocalDateTime joinedAt;
 }

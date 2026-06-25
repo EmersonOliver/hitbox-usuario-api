@@ -10,12 +10,13 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class TeamMember {
+public class TeamPermission {
 
-    private UUID memberId;
+    private UUID teamPermissionId;
 
+    private UUID teamId;
 
-    private LocalDateTime joinedAt;
+    private UUID modulePermissionId;
 
-
+    private String permissionCode;
 }
