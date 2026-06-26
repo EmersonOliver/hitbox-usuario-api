@@ -1,6 +1,5 @@
 package br.com.hitbox.core.domain;
 
-import br.com.hitbox.infra.enums.TeamRole;
 import br.com.hitbox.infra.enums.UserRole;
 import lombok.*;
 
@@ -18,7 +17,6 @@ public class UserProfile {
     private String email;
     private String avatarUrl;
     private UserRole role;
-    private TeamRole teamRole;
     private UUID companyId;
     private String companyName;
     private UUID teamId;

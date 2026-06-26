@@ -1,8 +1,6 @@
 package br.com.hitbox.infra.entity;
 
 import br.com.hitbox.infra.enums.RequestStatus;
-import br.com.hitbox.infra.enums.TeamRole;
-import br.com.hitbox.infra.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,9 +29,6 @@ public class CompanyMembershipRequestEntity {
 
     @Column(nullable = false)
     private String email;
-
-    @Enumerated(EnumType.STRING)
-    private TeamRole role;
 
     @Column(nullable = false, unique = true, columnDefinition = "TEXT")
     private String invitationToken;

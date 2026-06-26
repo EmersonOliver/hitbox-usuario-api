@@ -4,7 +4,6 @@ import br.com.hitbox.core.domain.Company;
 import br.com.hitbox.core.domain.Team;
 import br.com.hitbox.core.domain.User;
 import br.com.hitbox.infra.entity.UserEntity;
-import br.com.hitbox.infra.enums.TeamRole;
 import br.com.hitbox.infra.enums.UserRole;
 import br.com.hitbox.interfaces.request.CompanyMembershipRequest;
 import br.com.hitbox.security.AuthenticatedUser;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -45,11 +45,7 @@ public class TokenService {
                             context.getUserRole()
                                     .name()
                     )
-                    .withClaim(
-                            "X-Team-Role",
-                            context.getTeamRole()
-                                    .name()
-                    )
+
                     .withClaim(
                             "X-Company-Id",
                             context.getCompanyId()
@@ -76,6 +72,7 @@ public class TokenService {
                             "fullName",
                             context.getFullName()
                     )
+                    .withClaim("permissions", new ArrayList<>(context.getPermissions()))
                     .withExpiresAt(
                             generateExpirationDate()
                     )
@@ -99,11 +96,7 @@ public class TokenService {
                             requestId
                                     .toString()
                     )
-                    .withClaim(
-                            "X-Team-Role",
-                            request.getRole()
-                                    .name()
-                    )
+
                     .withClaim(
                             "X-User-Role",
                             request.getUserRole()
@@ -347,24 +340,6 @@ public class TokenService {
                 : null;
     }
 
-    public TeamRole getTeamRole(String token) {
-        var decoded =
-                JWT.require(
-                                Algorithm.HMAC256(secret)
-                        )
-                        .withIssuer("erp-hitbox")
-                        .build()
-                        .verify(token);
-
-        String teamRole =
-                decoded.getClaim(
-                        "X-Team-Role"
-                ).asString();
-
-        return teamRole != null
-                ? TeamRole.valueOf(teamRole)
-                : null;
-    }
 
     public String getFullName(String token) {
         var decoded =

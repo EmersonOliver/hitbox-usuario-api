@@ -38,7 +38,6 @@ public class MembershipInvitationUseCase {
                         .companyId(request.companyId())
                         .teamId(request.teamId())
                         .email(request.email())
-                        .role(team.getTeamRole())
                         .userRole(request.userRole())
                         .invitationToken(token)
                         .status(RequestStatus.PENDING)

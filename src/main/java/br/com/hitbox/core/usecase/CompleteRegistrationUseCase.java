@@ -77,7 +77,6 @@ public class CompleteRegistrationUseCase {
                         .userId(user.getUserId())
                         .companyId(invitation.getCompanyId())
                         .teamId(invitation.getTeamId())
-                        .role(invitation.getRole())
                         .active(Boolean.TRUE)
                         .build()
         );
@@ -110,7 +109,6 @@ public class CompleteRegistrationUseCase {
                                         .companyName(m.getCompanyName())
                                         .teamId(m.getTeamId())
                                         .teamName(m.getTeamName())
-                                        .teamRole(m.getRole())
                                         .build())
                         .toList())
                 .message("Cadastro realizado com sucesso")

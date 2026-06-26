@@ -1,8 +1,10 @@
 package br.com.hitbox.infra.query;
 
 import br.com.hitbox.core.domain.Team;
+import br.com.hitbox.core.gateway.TeamGateway;
 import br.com.hitbox.infra.entity.TeamEntity;
 import br.com.hitbox.infra.enums.RequestStatus;
+import br.com.hitbox.infra.exceptions.HitboxException;
 import br.com.hitbox.infra.jpa.SpringDataCompanyMembershipRequestRepository;
 import br.com.hitbox.infra.jpa.SpringDataTeamRepository;
 import br.com.hitbox.infra.mapper.CompanyMembershipEntityMapper;
@@ -26,6 +28,7 @@ public class TeamQueryService {
     private final TeamEntityMapper mapper;
     private final SpringDataCompanyMembershipRequestRepository requestRepository;
     private final CompanyMembershipEntityMapper companyMembershipEntityMapper;
+    private final TeamGateway teamGateway;
 
     public Page<Team> listAllTeams(Pageable pageable, UUID companyId) {
         Specification<TeamEntity> specs = (root, query, builder) -> {
@@ -42,7 +45,6 @@ public class TeamQueryService {
                                         rs -> rs.getTeam().getId()
                                 )
                         );
-        var members = teamRepository.findAll(specs, pageable).map(mapper::toDomain);
         var teams =
                 teamRepository
                         .findAll(specs, pageable)
@@ -69,5 +71,12 @@ public class TeamQueryService {
 
         return teams;
     }
+
+
+    public Team findById(UUID teamId){
+        return this.teamGateway.findById(teamId)
+                .orElseThrow(()-> new HitboxException("Time Requisitado é inválido"));
+    }
+
 
 }

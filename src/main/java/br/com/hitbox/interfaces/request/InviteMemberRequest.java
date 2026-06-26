@@ -1,6 +1,5 @@
 package br.com.hitbox.interfaces.request;
 
-import br.com.hitbox.infra.enums.TeamRole;
 import br.com.hitbox.infra.enums.UserRole;
 
 import java.util.UUID;

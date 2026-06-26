@@ -1,6 +1,5 @@
 package br.com.hitbox.core.domain;
 
-import br.com.hitbox.infra.enums.TeamRole;
 import br.com.hitbox.infra.enums.UserRole;
 import lombok.*;
 
@@ -20,7 +19,7 @@ public class CompanyMembership {
     private UUID teamId;
     private String companyName;
     private String teamName;
-    private TeamRole role;
+    private UserRole userRole;
     private LocalDateTime joinedAt;
     private Boolean active;
     /*
@@ -40,19 +39,9 @@ public class CompanyMembership {
                 : userName + " " + userLastname;
     }
 
-    public void changeRole(TeamRole role) {
-        this.role = role;
-    }
 
     public boolean isActive() {
         return Boolean.TRUE.equals(active);
     }
 
-    public boolean isManager() {
-        return TeamRole.MANAGER.equals(role);
-    }
-
-    public boolean isOwner() {
-        return TeamRole.OWNER.equals(role);
-    }
 }

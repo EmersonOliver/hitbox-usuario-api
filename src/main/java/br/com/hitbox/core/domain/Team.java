@@ -1,6 +1,5 @@
 package br.com.hitbox.core.domain;
 
-import br.com.hitbox.infra.enums.TeamRole;
 import br.com.hitbox.interfaces.request.CompanyMembershipRequest;
 import lombok.*;
 
@@ -20,7 +19,6 @@ public class Team {
     private String teamName;
     private String description;
     private Boolean active;
-    private TeamRole teamRole;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer totalMembers;
@@ -33,13 +31,55 @@ public class Team {
     private List<CompanyMembershipRequest> pendingInvitations =
             new ArrayList<>();
 
+    @Builder.Default
+    private List<TeamPermission> permissions =
+            new ArrayList<>();
+
     public Integer countTotalMembers() {
         return memberships.size();
     }
 
+
+    public void addPermission(UUID modulePermissionId) {
+
+        boolean alreadyExists =
+                permissions.stream()
+                        .anyMatch(permission ->
+                                permission.getModulePermissionId()
+                                        .equals(modulePermissionId)
+                        );
+
+        if (alreadyExists) {
+            return;
+        }
+
+        permissions.add(
+                TeamPermission.builder()
+                        .teamId(this.teamId)
+                        .modulePermissionId(modulePermissionId)
+                        .build()
+        );
+    }
+
+    public void removePermission(UUID modulePermissionId) {
+
+        permissions.removeIf(permission ->
+                permission.getModulePermissionId()
+                        .equals(modulePermissionId)
+        );
+    }
+
+    public boolean hasPermission(UUID modulePermissionId) {
+
+        return permissions.stream()
+                .anyMatch(permission ->
+                        permission.getModulePermissionId()
+                                .equals(modulePermissionId)
+                );
+    }
+
     public void addMember(
             UUID userId,
-            TeamRole role,
             UUID companyId
     ) {
 
@@ -62,7 +102,6 @@ public class Team {
                         .userId(userId)
                         .companyId(companyId)
                         .teamId(teamId)
-                        .role(role)
                         .joinedAt(LocalDateTime.now())
                         .active(Boolean.TRUE)
                         .build()
@@ -76,22 +115,6 @@ public class Team {
         );
     }
 
-    public void changeMemberRole(
-            UUID memberId,
-            TeamRole role
-    ) {
-
-        CompanyMembership companyMembership =
-                memberships.stream()
-                        .filter(m ->
-                                m.getMembershipId()
-                                        .equals(memberId)
-                        )
-                        .findFirst()
-                        .orElseThrow();
-
-        companyMembership.changeRole(role);
-    }
 
     public boolean containsMember(UUID memberId) {
         return memberships.stream()

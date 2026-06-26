@@ -20,7 +20,6 @@ public class CompanyMembershipEntityMapper {
                 .userId(entity.getUser().getId())
                 .companyId(entity.getCompany().getId())
                 .companyName(entity.getCompany().getCompanyName())
-                .role(entity.getRole())
                 .teamName(entity.getTeam().getTeamName())
                 .teamId(
                         entity.getTeam() != null
@@ -35,7 +34,6 @@ public class CompanyMembershipEntityMapper {
                 .user(UserEntity.builder().id(domain.getMembershipId()).build())
                 .company(CompanyEntity.builder().id(domain.getCompanyId()).build())
                 .team(TeamEntity.builder().id(domain.getTeamId()).build())
-                .role(domain.getRole())
                 .joinedAt(LocalDateTime.now())
                 .active(domain.getActive())
                 .build();
@@ -48,7 +46,6 @@ public class CompanyMembershipEntityMapper {
         return CompanyMembershipRequest.builder()
                 .requestId(entity.getId())
                 .companyId(entity.getCompany().getId())
-                .role(entity.getRole())
                 .teamId(
                         entity.getTeam() != null
                                 ? entity.getTeam().getId()

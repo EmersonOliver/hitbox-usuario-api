@@ -1,6 +1,5 @@
 package br.com.hitbox.interfaces.response;
 
-import br.com.hitbox.infra.enums.TeamRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +16,6 @@ public class InvitationDetailsResponse {
     private String companyName;
 
     private String teamName;
-
-    private TeamRole role;
 
     private Boolean expired;
 }
