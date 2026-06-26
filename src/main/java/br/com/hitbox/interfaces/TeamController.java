@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("team")
 @RequiredArgsConstructor
@@ -35,6 +37,12 @@ public class TeamController {
     public ResponseEntity<Page<TeamResponse>> listAllTeams(Pageable pageable, @AuthenticationPrincipal AuthenticatedUser user) {
         var result = queryService.listAllTeams(pageable, user.getCompanyId()).map(responseMapper::toResponse);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("findByTeamId/{teamId}")
+    public ResponseEntity<TeamResponse> findTeamById(@PathVariable UUID teamId) {
+        var response = queryService.findById(teamId);
+        return ResponseEntity.ok(responseMapper.toResponse(response));
     }
 
 }

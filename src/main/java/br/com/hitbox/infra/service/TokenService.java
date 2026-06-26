@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -71,6 +72,7 @@ public class TokenService {
                             "fullName",
                             context.getFullName()
                     )
+                    .withClaim("permissions", new ArrayList<>(context.getPermissions()))
                     .withExpiresAt(
                             generateExpirationDate()
                     )

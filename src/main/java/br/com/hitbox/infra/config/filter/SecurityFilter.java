@@ -11,12 +11,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -80,12 +85,14 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     tokenService.getUserRole(token)
                             )
                             .build();
+            Collection<GrantedAuthority> authorities =
+                    buildAuthorities(principal);
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             principal,
                             null,
-                            user.getAuthorities()
+                            authorities
                     );
 
             SecurityContextHolder
@@ -104,5 +111,26 @@ public class SecurityFilter extends OncePerRequestFilter {
         var authorization = httpServletRequest.getHeader("Authorization");
         if (authorization == null) return null;
         return authorization.replace("Bearer ", "");
+    }
+
+    private Collection<GrantedAuthority> buildAuthorities(
+            AuthenticatedUser userContext) {
+
+        List<GrantedAuthority> authorities =
+                new ArrayList<>();
+
+        authorities.add(
+                new SimpleGrantedAuthority(
+                        "ROLE_" + userContext.getUserRole().name()
+                )
+        );
+
+        userContext.getPermissions()
+                .forEach(permission ->
+                        authorities.add(
+                                new SimpleGrantedAuthority(permission)
+                        ));
+
+        return authorities;
     }
 }

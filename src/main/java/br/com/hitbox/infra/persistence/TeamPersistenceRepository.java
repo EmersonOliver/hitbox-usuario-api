@@ -27,7 +27,7 @@ public class TeamPersistenceRepository implements TeamGateway {
                 .active(domain.getActive())
                 .company(CompanyEntity.builder().id(domain.getCompanyId()).build())
                 .createdAt(domain.getCreatedAt())
-
+                .description(domain.getDescription())
                 .build();
         var persisted = teamRepository.save(teamEntity);
         return Team.builder()
@@ -36,6 +36,7 @@ public class TeamPersistenceRepository implements TeamGateway {
                 .teamName(persisted.getTeamName())
                 .active(persisted.getActive())
                 .createdAt(persisted.getCreatedAt())
+                .description(persisted.getDescription())
                 .build();
     }
 
