@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,7 +38,8 @@ public class AuthenticatedUser implements Serializable {
     private UserRole userRole;
 
 
-    private Set<String> permissions;
+    @Builder.Default
+    private Set<String> permissions = new HashSet<>();
 
     public boolean hasCompany() {
         return companyId != null;

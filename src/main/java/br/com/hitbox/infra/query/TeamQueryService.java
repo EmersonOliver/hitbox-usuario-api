@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class TeamQueryService {
         };
 
         var requestedMembers = requestRepository.findAll().stream()
-                .filter(rs-> !rs.getStatus().equals(RequestStatus.APPROVED)
+                .filter(rs -> !rs.getStatus().equals(RequestStatus.APPROVED)
                         && LocalDateTime.now().isBefore(rs.getExpiresAt())).toList();
         var requestsByTeam =
                 requestedMembers.stream()
@@ -72,10 +73,14 @@ public class TeamQueryService {
         return teams;
     }
 
+    public List<Team> loadAllTeamsWithoutPages() {
+        return this.teamRepository.findAll().stream().map(mapper::toDomain).toList();
+    }
 
-    public Team findById(UUID teamId){
+
+    public Team findById(UUID teamId) {
         return this.teamGateway.findById(teamId)
-                .orElseThrow(()-> new HitboxException("Time Requisitado é inválido"));
+                .orElseThrow(() -> new HitboxException("Time Requisitado é inválido"));
     }
 
 
