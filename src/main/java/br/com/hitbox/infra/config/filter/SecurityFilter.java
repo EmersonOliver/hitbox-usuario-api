@@ -42,6 +42,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token =
                 recoverToken(request);
 
+
         if (token != null) {
 
             UUID userId =

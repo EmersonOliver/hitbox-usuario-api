@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -44,5 +45,12 @@ public class TeamController {
         var response = queryService.findById(teamId);
         return ResponseEntity.ok(responseMapper.toResponse(response));
     }
+
+    @GetMapping("load/all/teams/withoupages")
+    public ResponseEntity<List<TeamResponse>> allTeamsByConsult() {
+        var response = queryService.loadAllTeamsWithoutPages();
+        return ResponseEntity.ok(response.stream().map(responseMapper::toResponse).toList());
+    }
+
 
 }
