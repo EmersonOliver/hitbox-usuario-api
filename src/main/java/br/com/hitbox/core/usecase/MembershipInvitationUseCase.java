@@ -10,6 +10,7 @@ import br.com.hitbox.interfaces.request.CompanyMembershipRequest;
 import br.com.hitbox.interfaces.request.InviteMemberRequest;
 import br.com.hitbox.interfaces.response.InvitationDetailsResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,9 @@ public class MembershipInvitationUseCase {
     private final CompanyMembershipRequestGateway gateway;
     private final TeamGateway teamGateway;
     private final MailGateway mailGateway;
+
+    @Value("${erp.front.web.host}")
+    private String host;
 
     public void invite(
             InviteMemberRequest request
@@ -51,7 +55,7 @@ public class MembershipInvitationUseCase {
 
         mailGateway.sendInvitation(
                 request.email(),
-               "http://localhost:4200/invite/"+ invitation.getInvitationToken()
+               host+"/invite/"+ invitation.getInvitationToken()
         );
     }
 
