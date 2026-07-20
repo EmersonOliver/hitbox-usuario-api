@@ -15,7 +15,7 @@ import tools.jackson.databind.json.JsonMapper;
 //@EnableCaching
 public class RedisConfig {
 
-    @Bean
+    @Bean("redisObjectMapper")
     public ObjectMapper objectMapper() {
             return JsonMapper.builder()
                 .findAndAddModules()
@@ -25,7 +25,7 @@ public class RedisConfig {
     @Bean
     public RedisTemplate<String, AuthenticatedUser> redisTemplate(
             RedisConnectionFactory connectionFactory,
-            ObjectMapper objectMapper
+            ObjectMapper redisObjectMapper
     ) {
 
         RedisTemplate<String, AuthenticatedUser> template =
@@ -39,7 +39,7 @@ public class RedisConfig {
 
         JacksonJsonRedisSerializer<Object> serializer =
                 new JacksonJsonRedisSerializer<>(
-                        objectMapper,
+                        redisObjectMapper,
                         Object.class
                 );
 
