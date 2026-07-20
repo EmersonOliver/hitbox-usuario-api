@@ -31,6 +31,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ws/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/create").permitAll()
                         .requestMatchers(HttpMethod.GET, "/test-mail").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/**").authenticated()
@@ -47,6 +48,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/membership/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/membership/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/membership/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/notifications/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/notifications/**").authenticated()
                 )
 
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

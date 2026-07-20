@@ -28,6 +28,8 @@ public class CompanyController {
     private final SelectCompanyUseCase selectCompanyUseCase;
     private final CompanyMapper mapper;
 
+
+
     @PostMapping("/create")
     public ResponseEntity<OnboardingResponse> createCompany(
             @AuthenticationPrincipal AuthenticatedUser user,
