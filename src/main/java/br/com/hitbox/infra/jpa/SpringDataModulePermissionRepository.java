@@ -8,4 +8,7 @@ import java.util.UUID;
 
 @Repository
 public interface SpringDataModulePermissionRepository extends JpaRepository<ModulePermissionEntity, UUID> {
+
+
+
 }
