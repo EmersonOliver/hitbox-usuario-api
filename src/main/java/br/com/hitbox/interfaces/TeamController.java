@@ -47,8 +47,8 @@ public class TeamController {
     }
 
     @GetMapping("load/all/teams/withoupages")
-    public ResponseEntity<List<TeamResponse>> allTeamsByConsult() {
-        var response = queryService.loadAllTeamsWithoutPages();
+    public ResponseEntity<List<TeamResponse>> allTeamsByConsult(@AuthenticationPrincipal AuthenticatedUser user) {
+        var response = queryService.loadAllTeamsWithoutPages(user.getCompanyId());
         return ResponseEntity.ok(response.stream().map(responseMapper::toResponse).toList());
     }
 

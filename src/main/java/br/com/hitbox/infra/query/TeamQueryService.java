@@ -73,8 +73,9 @@ public class TeamQueryService {
         return teams;
     }
 
-    public List<Team> loadAllTeamsWithoutPages() {
-        return this.teamRepository.findAll().stream().map(mapper::toDomain).toList();
+    public List<Team> loadAllTeamsWithoutPages(UUID companyId) {
+        return this.teamRepository.listAllTeamByCompanyId(companyId)
+                .stream().map(mapper::toDomain).toList();
     }
 
 

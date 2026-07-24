@@ -2,25 +2,22 @@ package br.com.hitbox.core.domain;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Setter
-public class TeamPermission {
+public class TeamPermissionItem {
 
-    private UUID teamPermissionId;
-
-    private UUID teamId;
-
-    private UUID modulePermissionId;
+    private UUID permissionId;
 
     private String permissionCode;
 
-    private UUID permissionId;
+    private String permissionName;
+
+    private UUID teamPermissionId;
 
     private Boolean granted;
 }
